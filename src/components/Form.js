@@ -14,6 +14,7 @@ class Form extends Component {
       country: this.countryRef.current.value
     };
     //Enviarlo por props
+    this.props.dataConsult(response);
   };
 
   render() {
