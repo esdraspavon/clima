@@ -5,29 +5,55 @@ import Error from "./components/Error";
 
 class App extends Component {
   state = {
-    error: false
+    error: false,
+    consult: {},
+    result: {}
+  };
+
+  componentDidUpdate() {
+    this.consultApi();
+  }
+
+  consultApi = () => {
+    const { city, country } = this.state.consult;
+    if (city === "" || country === "") return null;
+
+    const appId = "468a13ac2f9ea871e3995c86fe5e42a0";
+    let url = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&APPID=${appId}`;
+
+    //query con fetch api
+    fetch(url)
+      .then(resp => {
+        return resp.json();
+      })
+      .then(datos => {
+        this.setState({ result: datos });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   dataConsult = resp => {
     if (resp.city === "" || resp.country === "") {
       this.setState({ error: true });
     } else {
-      console.log("okay");
+      this.setState({ consult: resp });
     }
   };
 
   render() {
     const error = this.state.error;
-    let resultado;
+    let result;
     if (error) {
-      resultado = <Error message="Ambos campos son obligatorios" />;
+      result = <Error message="Ambos campos son obligatorios" />;
     }
 
     return (
       <div className="App">
         <Header title="Clima React" />
         <Form dataConsult={this.dataConsult} />
-        {resultado}
+        {result}
       </div>
     );
   }
