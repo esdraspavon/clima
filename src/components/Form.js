@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 class Form extends Component {
   //refs
@@ -56,5 +57,9 @@ class Form extends Component {
     );
   }
 }
+
+Form.propTypes = {
+  dataConsult: PropTypes.func.isRequired
+};
 
 export default Form;

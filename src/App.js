@@ -38,7 +38,6 @@ class App extends Component {
   };
 
   dataConsult = resp => {
-    console.log(resp);
     if (resp.city === "" || resp.country === "") {
       this.setState({ error: true });
     } else {
