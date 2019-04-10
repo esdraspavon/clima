@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Header from "./components/Header";
 import Form from "./components/Form";
 import Error from "./components/Error";
+import Weather from "./components/Weather";
 
 class App extends Component {
   state = {
@@ -10,8 +11,10 @@ class App extends Component {
     result: {}
   };
 
-  componentDidUpdate() {
-    this.consultApi();
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.consult !== this.state.consult) {
+      this.consultApi();
+    }
   }
 
   consultApi = () => {
@@ -35,10 +38,11 @@ class App extends Component {
   };
 
   dataConsult = resp => {
+    console.log(resp);
     if (resp.city === "" || resp.country === "") {
       this.setState({ error: true });
     } else {
-      this.setState({ consult: resp });
+      this.setState({ consult: resp, error: false });
     }
   };
 
@@ -47,6 +51,8 @@ class App extends Component {
     let result;
     if (error) {
       result = <Error message="Ambos campos son obligatorios" />;
+    } else {
+      result = <Weather result={this.state.result} />;
     }
 
     return (
